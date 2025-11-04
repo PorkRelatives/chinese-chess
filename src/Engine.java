@@ -8,7 +8,7 @@ import java.util.Objects;
  *
  * This program implements the core data structures and basic movement logic (Chariot and General)
  * for a Chinese Chess (Xiangqi) engine, following OOP principles.
- * The board is 10 rows (0-9) by 9 columns (0-8).
+ * The board is 10 rows (0-9) by 9 columns (0-8)
  */
 public class Engine {
 
