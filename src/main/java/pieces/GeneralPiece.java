@@ -18,6 +18,4 @@ public class GeneralPiece extends Piece{
         return false;
     }
 
-    public List
-
 }
