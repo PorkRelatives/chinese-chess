@@ -112,6 +112,7 @@ public class RenderBoard {
 
         tmp.setOnMouseClicked(event -> {
             System.out.println("Clicked");
+            tmp.setStrokeWidth(6);
         });
 
         elements.BoardSurface.getChildren().add(tmp);

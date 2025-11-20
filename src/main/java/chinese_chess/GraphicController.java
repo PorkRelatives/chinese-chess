@@ -8,14 +8,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.stage.Stage;
 
 public class GraphicController {
     static private double MENU_PADDING = ConstantValues.MENU_PADDING;
 
 
-    static void initGraphics(GraphicElements elements){
-
-
+    static void initGraphics(Stage stage, GraphicElements elements){
         elements.WindowRoot = new Pane();
         elements.WindowRoot.setStyle("-fx-background-color: black");
 
@@ -91,13 +90,14 @@ public class GraphicController {
         elements.WhosTurn = new Label("");
         elements.WhosTurn.setStyle("-fx-font-size: 16; -fx-text-fill: black;");
         elements.gLabel.setWrapText(true);
-        elements.GameMenu.getChildren().add(elements.WhosTurn);
 
+
+        elements.GameMenu.setSpacing(MENU_PADDING);
         elements.NewGame = new Button("新游戏");
-        elements.NewGame.setOnAction(event -> {MenuController.initGame(elements,TypeOfInit.General);});
+        elements.NewGame.setOnAction(event -> MenuController.initGame(stage,elements,TypeOfInit.General));
         elements.GameMenu.getChildren().add(elements.NewGame);
         elements.LoadFromSave = new Button("加载残局");
-        elements.LoadFromSave.setOnAction(event -> {MenuController.initGame(elements,TypeOfInit.FromSave);});
+        elements.LoadFromSave.setOnAction(event -> MenuController.initGame(stage,elements,TypeOfInit.FromSave));
         elements.GameMenu.getChildren().add(elements.LoadFromSave);
 
 
@@ -113,7 +113,7 @@ public class GraphicController {
         elements.PaneHanjie=new Pane();
         elements.Chuhe=new Label("楚河");
         elements.Hanjie=new Label("汉界");
-        String StyleOfMiddleBoard = new String();
+        //String StyleOfMiddleBoard = new String();
 
         elements.ChessBoard.getChildren().add(elements.PaneChuhe);
         elements.ChessBoard.getChildren().add(elements.PaneHanjie);
@@ -153,7 +153,6 @@ public class GraphicController {
         elements.bLabel.setMaxWidth((elements.GameRoot.getWidth()- BoardWidth)/2-2*ConstantValues.MENU_PADDING);
         elements.rLabel.setMaxWidth((elements.GameRoot.getWidth()- BoardWidth)/2-2*ConstantValues.MENU_PADDING);
         elements.gLabel.setMaxWidth((elements.GameRoot.getWidth()- BoardWidth)/2-2*ConstantValues.MENU_PADDING);
-        ;
 
 
         //画棋盘
