@@ -1,12 +1,11 @@
 package chinese_chess;
 
-import data.PieceType;
+import data.Position;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
@@ -172,7 +171,14 @@ public class GraphicController {
 
         //画棋子
         elements.BoardSurface.getChildren().clear();
-        RenderBoard.drawPiece(elements,0,0, PieceType.GENERAL,GridWidth, Color.BLACK);
-        RenderBoard.drawPiece(elements,1,0, PieceType.GENERAL,GridWidth, Color.RED);
+
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 9; j++) {
+                var u = elements.board.getPieceAt(new Position(i,j));
+                if(u!=null){
+                    RenderBoard.drawPiece(elements,i,j,u.pieceType,GridWidth,u.color);
+                }
+            }
+        }
     }
 }

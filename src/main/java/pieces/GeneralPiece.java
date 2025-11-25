@@ -1,16 +1,15 @@
 package pieces;
 
 import Core.Board;
-import data.Color;
+import data.Side;
 import data.PieceType;
 import data.Position;
 
 import java.util.List;
-import java.util.ArrayList;
 
 public class GeneralPiece extends Piece{
 
-    public GeneralPiece(Color color) {
+    public GeneralPiece(Side color) {
         super(color, PieceType.GENERAL);
     }
 
@@ -19,9 +18,9 @@ public class GeneralPiece extends Piece{
         int col = generalPosition.getCol();
         if (col < 3 || col > 5) return false;
         // Red Palace: Rows 7, 8, 9
-        if (color == Color.RED && row >= 7 && row <= 9) return true;
+        if (color == Side.RED && row >= 7 && row <= 9) return true;
         // Black Palace: Rows 0, 1, 2
-        if (color == Color.BLACK && row >= 0 && row <= 2) return true;
+        if (color == Side.BLACK && row >= 0 && row <= 2) return true;
         return false;
     }
 
@@ -61,7 +60,7 @@ public class GeneralPiece extends Piece{
         final Position blackPalaceCenter=new Position(1,4);
 
 
-        if(color==Color.RED&&currentPosition.equals(redPalaceCenter)||color==Color.BLACK&&currentPosition.equals(blackPalaceCenter)){
+        if(color== Side.RED&&currentPosition.equals(redPalaceCenter)||color== Side.BLACK&&currentPosition.equals(blackPalaceCenter)){
             int[][] diagonalDirections={{1,1},{1,-1},{-1,1},{-1,-1}};
             for(int[] dir:diagonalDirections){
                 int tempRow=currentRow+dir[0];
@@ -74,24 +73,24 @@ public class GeneralPiece extends Piece{
             }
         }
 
-        if(color==Color.RED){
+        if(color== Side.RED){
             for(Position pos:legalMoves){
                 if(redPalaceCenter.equals(pos)){
                     return legalMoves;
                 }
             }
-            if(board.getPieceAt(redPalaceCenter).color==Color.BLACK||board.getPieceAt(redPalaceCenter)==null){
+            if(board.getPieceAt(redPalaceCenter).color== Side.BLACK||board.getPieceAt(redPalaceCenter)==null){
                 legalMoves.add(redPalaceCenter);
                 return legalMoves;
             }
         }
-        if(color==Color.BLACK){
+        if(color== Side.BLACK){
             for(Position pos:legalMoves){
                 if(blackPalaceCenter.equals(pos)){
                     return legalMoves;
                 }
             }
-            if(board.getPieceAt(blackPalaceCenter)==null||board.getPieceAt(blackPalaceCenter).color==Color.RED){
+            if(board.getPieceAt(blackPalaceCenter)==null||board.getPieceAt(blackPalaceCenter).color== Side.RED){
                 legalMoves.add(blackPalaceCenter);
                 return legalMoves;
             }

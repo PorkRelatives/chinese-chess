@@ -1,6 +1,7 @@
 package chinese_chess;
 
 import data.PieceType;
+import data.Side;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
@@ -74,7 +75,7 @@ public class RenderBoard {
 
     }
 
-    public static void drawPiece(GraphicElements elements, int x, int y, PieceType type, double GridWidth, Color side){
+    public static void drawPiece(GraphicElements elements, int x, int y, PieceType type, double GridWidth, Side side){
         Circle tmp = new Circle();
         tmp.setFill(Color.web("#FFD963"));
         tmp.setRadius(GridWidth*0.4);
@@ -89,7 +90,7 @@ public class RenderBoard {
         Label tmplabel;
         switch (type){
             case GENERAL:
-                if(side==Color.BLACK)tmplabel = new Label("將");
+                if(side==Side.BLACK)tmplabel = new Label("將");
                 else tmplabel = new Label("帥");
                 break;
 
@@ -112,8 +113,8 @@ public class RenderBoard {
         tmplabel.setLayoutY((x+0.68)*GridWidth);
         tmplabel.setMouseTransparent(true);
 
-        if(side==Color.RED)tmplabel.setTextFill(Color.web("#df0000"));
-        if(side==Color.BLACK)tmplabel.setTextFill(Color.BLACK);
+        if(side==Side.RED)tmplabel.setTextFill(Color.web("#df0000"));
+        if(side==Side.BLACK)tmplabel.setTextFill(Color.BLACK);
 
         tmp.setOnMouseClicked(event -> {
             if(GraphicController.getSelection().equals(new GridPoint(x,y))){

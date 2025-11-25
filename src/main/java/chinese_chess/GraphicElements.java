@@ -1,5 +1,6 @@
 package chinese_chess;
 
+import Core.Board;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
@@ -24,4 +25,6 @@ public class GraphicElements {
     Button NewGame, LoadFromSave;
 
     Label WhosTurn;
+
+    Board board;
 }

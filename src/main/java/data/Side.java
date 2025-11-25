@@ -1,10 +1,10 @@
 package data;
 
 //THIS enum is about describing the color RED or BLACK
-public enum Color{
+public enum Side {
     RED, BLACK;
 
-    public Color opposite(){
+    public Side opposite(){
         if(this==RED){
             return BLACK;
         }

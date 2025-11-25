@@ -1,6 +1,6 @@
 package Core;
 
-import data.Color;
+import data.Side;
 import data.Position;
 import pieces.GeneralPiece;
 import pieces.Piece;
@@ -9,15 +9,15 @@ public class Board {
     public static final int ROWS =10;
     public static final int COLS = 9;
     private final Piece[][] grid=new Piece[ROWS][COLS];
-    private Color currentTurn=Color.RED;
+    private Side currentTurn= Side.RED;
 
     public Board(){
         initializeBoard();
     }
 
     private void initializeBoard(){
-        setPieceAt(0,4, new GeneralPiece(Color.BLACK));
-        setPieceAt(9,4, new GeneralPiece(Color.RED));
+        setPieceAt(0,4, new GeneralPiece(Side.BLACK));
+        setPieceAt(9,4, new GeneralPiece(Side.RED));
     }
 
     public Piece getPieceAt(Position position) {
