@@ -9,8 +9,8 @@ import java.util.List;
 
 public class GeneralPiece extends Piece{
 
-    public GeneralPiece(Side color) {
-        super(color, PieceType.GENERAL);
+    public GeneralPiece(Side side) {
+        super(side, PieceType.GENERAL);
     }
 
     private boolean isInPalace(Position generalPosition) {
@@ -18,9 +18,9 @@ public class GeneralPiece extends Piece{
         int col = generalPosition.getCol();
         if (col < 3 || col > 5) return false;
         // Red Palace: Rows 7, 8, 9
-        if (color == Side.RED && row >= 7 && row <= 9) return true;
+        if (side == Side.RED && row >= 7 && row <= 9) return true;
         // Black Palace: Rows 0, 1, 2
-        if (color == Side.BLACK && row >= 0 && row <= 2) return true;
+        if (side == Side.BLACK && row >= 0 && row <= 2) return true;
         return false;
     }
 
@@ -48,7 +48,7 @@ public class GeneralPiece extends Piece{
 
             if (isInPalace(tempPosition)) {
                 Piece targetPiece = board.getPieceAt(tempPosition);
-                if (targetPiece == null || targetPiece.color != this.color) {
+                if (targetPiece == null || targetPiece.side != this.side) {
                     legalMoves.add(tempPosition);
                 }
             }
@@ -60,37 +60,37 @@ public class GeneralPiece extends Piece{
         final Position blackPalaceCenter=new Position(1,4);
 
 
-        if(color== Side.RED&&currentPosition.equals(redPalaceCenter)||color== Side.BLACK&&currentPosition.equals(blackPalaceCenter)){
+        if(side == Side.RED&&currentPosition.equals(redPalaceCenter)|| side == Side.BLACK&&currentPosition.equals(blackPalaceCenter)){
             int[][] diagonalDirections={{1,1},{1,-1},{-1,1},{-1,-1}};
             for(int[] dir:diagonalDirections){
                 int tempRow=currentRow+dir[0];
                 int tempCol=currentCol+dir[1];
                 Position tempPosition=new Position(tempRow,tempCol);
                 Piece targetPiece=board.getPieceAt(tempPosition);
-                if(targetPiece==null||targetPiece.color!=this.color){
+                if(targetPiece==null||targetPiece.side !=this.side){
                     legalMoves.add(tempPosition);
                 }
             }
         }
 
-        if(color== Side.RED){
+        if(side == Side.RED){
             for(Position pos:legalMoves){
                 if(redPalaceCenter.equals(pos)){
                     return legalMoves;
                 }
             }
-            if(board.getPieceAt(redPalaceCenter).color== Side.BLACK||board.getPieceAt(redPalaceCenter)==null){
+            if(board.getPieceAt(redPalaceCenter).side == Side.BLACK||board.getPieceAt(redPalaceCenter)==null){
                 legalMoves.add(redPalaceCenter);
                 return legalMoves;
             }
         }
-        if(color== Side.BLACK){
+        if(side == Side.BLACK){
             for(Position pos:legalMoves){
                 if(blackPalaceCenter.equals(pos)){
                     return legalMoves;
                 }
             }
-            if(board.getPieceAt(blackPalaceCenter)==null||board.getPieceAt(blackPalaceCenter).color== Side.RED){
+            if(board.getPieceAt(blackPalaceCenter)==null||board.getPieceAt(blackPalaceCenter).side == Side.RED){
                 legalMoves.add(blackPalaceCenter);
                 return legalMoves;
             }

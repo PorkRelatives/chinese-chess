@@ -15,9 +15,13 @@ public class Board {
         initializeBoard();
     }
 
+    public Side getCurrentTurn(){
+        return currentTurn;
+    }
+
     private void initializeBoard(){
-        setPieceAt(0,4, new GeneralPiece(Side.BLACK));
-        setPieceAt(9,4, new GeneralPiece(Side.RED));
+        setPieceAt(initialPositions.blackGeneral, new GeneralPiece(Side.BLACK));
+        setPieceAt(initialPositions.redGeneral, new GeneralPiece(Side.RED));
     }
 
     public Piece getPieceAt(Position position) {
@@ -29,19 +33,19 @@ public class Board {
     public void movePiece(Position fromPosition, Position toPosition) {
         int fromRow=fromPosition.getRow();
         int fromCol=fromPosition.getCol();
-        int toRow=toPosition.getRow();
-        int toCol=toPosition.getCol();
         if (grid[fromRow][fromCol]==null){
             System.out.println("No piece at the source position!");
             return;
         }
         Piece piece = getPieceAt(fromPosition);
-        setPieceAt(toRow, toCol, piece);
-        setPieceAt(fromRow, fromCol, null);
+        setPieceAt(toPosition, piece);
+        setPieceAt(fromPosition, null);
     }
 
 
-    public void setPieceAt(int r, int c, Piece piece) {
+    public void setPieceAt(Position position, Piece piece) {
+        int r=position.getRow();
+        int c=position.getCol();
         grid[r][c] = piece;
     }
 
