@@ -1,21 +1,21 @@
 package pieces;
 
 import Core.Board;
-import data.Color;
+import data.Side;
 import data.PieceType;
 import data.Position;
 
 import java.util.List;
 
 public abstract class Piece {
-    public final Color color;
+    public final Side color;
     public final PieceType pieceType;
 
     private Position currentPosition;
 
     public boolean isSelected=false;
 
-    public Piece(Color color, PieceType pieceType){
+    public Piece(Side color, PieceType pieceType){
         this.color=color;
         this.pieceType=pieceType;
     }
