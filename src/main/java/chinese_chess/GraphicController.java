@@ -176,7 +176,7 @@ public class GraphicController {
             for (int j = 0; j < 9; j++) {
                 var u = elements.board.getPieceAt(new Position(i,j));
                 if(u!=null){
-                    RenderBoard.drawPiece(elements,i,j,u.pieceType,GridWidth,u.color);
+                    RenderBoard.drawPiece(elements,i,j,u.pieceType,GridWidth,u.side);
                 }
             }
         }

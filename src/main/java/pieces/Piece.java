@@ -8,22 +8,22 @@ import data.Position;
 import java.util.List;
 
 public abstract class Piece {
-    public final Side color;
+    public final Side side;
     public final PieceType pieceType;
 
     private Position currentPosition;
 
     public boolean isSelected=false;
 
-    public Piece(Side color, PieceType pieceType){
-        this.color=color;
+    public Piece(Side side, PieceType pieceType){
+        this.side = side;
         this.pieceType=pieceType;
     }
 
     public List<Position> getLegalMoves(Board board, Position currentPosition){
         List<Position> legalMoves=null;
         if(this.pieceType==PieceType.GENERAL){
-            GeneralPiece generalPiece=new GeneralPiece(this.color);
+            GeneralPiece generalPiece=new GeneralPiece(this.side);
             legalMoves = generalPiece.getLegalMoves(board,currentPosition);
         }
 
