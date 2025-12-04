@@ -1,5 +1,6 @@
 package Core;
 
+import chinese_chess.GraphicController;
 import data.InitialPositions;
 import data.Side;
 import data.Position;
@@ -12,6 +13,18 @@ public class Board {
     public static final int ROWS =10;
     public static final int COLS = 9;
     private final Piece[][] grid=new Piece[ROWS][COLS];
+    private Position hoverPosition;
+    public Position getHoverPosition(){
+        return hoverPosition;
+    }
+    public void setHoverPosition(Position pos){
+        if(hoverPosition==null||hoverPosition!=pos) GraphicController.HoverChangedFlag=true;
+        hoverPosition = pos;
+    }
+    public void deHover(){
+        if(hoverPosition!=null) GraphicController.HoverChangedFlag=true;
+        hoverPosition = null;
+    }
     private Side currentTurn= Side.RED;
     // Track the currently selected position on this board (if any)
     private Position selectedPosition = null;

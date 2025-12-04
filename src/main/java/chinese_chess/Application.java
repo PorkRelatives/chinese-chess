@@ -24,6 +24,8 @@ public class Application extends javafx.application.Application {
         primaryStage.fullScreenProperty().addListener((obs,oldValue,newValue)-> windowReactToChange());
         primaryStage.maximizedProperty().addListener((obs,oldValue,newValue)-> windowReactToChange());
 
+
+
         Scene scene = new Scene(elements.WindowRoot, 800, 600);
 
         primaryStage.setScene(scene);
