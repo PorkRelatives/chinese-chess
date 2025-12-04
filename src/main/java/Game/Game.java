@@ -86,8 +86,11 @@ public class Game{
                         System.out.println("Black wins!");
                         setGameStatus(GameStatus.BLACK_WIN);
                     }
-                    else if(status==0){
-                        System.out.println("Draw!");//这里应该仔细判断到底是哪边困毙了
+                    else if(status==3){
+                        System.out.println("Red stalemate, Black Wins");//这里应该仔细判断到底是哪边困毙了
+                    }
+                    else if(status==4) {
+                        System.out.println("Black stalemate, Red Wins");
                     }
 
                 }
