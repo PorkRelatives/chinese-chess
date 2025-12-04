@@ -1,6 +1,6 @@
 package Core;
 
-import GameSave.RecMove;
+import chinese_chess.GraphicController;
 import data.InitialPositions;
 import data.Side;
 import data.Position;
@@ -13,11 +13,21 @@ public class Board {
     public static final int ROWS =10;
     public static final int COLS = 9;
     private final Piece[][] grid=new Piece[ROWS][COLS];
+    private Position hoverPosition;
+    public Position getHoverPosition(){
+        return hoverPosition;
+    }
+    public void setHoverPosition(Position pos){
+        if(hoverPosition==null||hoverPosition!=pos) GraphicController.HoverChangedFlag=true;
+        hoverPosition = pos;
+    }
+    public void deHover(){
+        if(hoverPosition!=null) GraphicController.HoverChangedFlag=true;
+        hoverPosition = null;
+    }
     private Side currentTurn= Side.RED;
     // Track the currently selected position on this board (if any)
     private Position selectedPosition = null;
-
-    public List<RecMove> recordedMoves;
 
     public Board(){
         initializeBoard();
@@ -140,23 +150,6 @@ public class Board {
         return uniqueThreatenedPositions;
     }
 
-    public List<Position> getAllLegalMoves(Side side){
-        List<Position> allLegalMoves=new java.util.ArrayList<>();
-        for(int r=0; r<ROWS; r++){
-            for(int c=0; c<COLS; c++){
-                Piece piece=grid[r][c];
-                if(piece!=null && piece.side==side){
-                    Position piecePosition=new Position(r,c);
-                    List<Position> pieceMoves=piece.getLegalMoves(this,piecePosition);
-                    if(pieceMoves!=null){
-                        allLegalMoves.addAll(pieceMoves);
-                    }
-                }
-            }
-        }
-        return allLegalMoves;
-    }
-
 
     public boolean isGeneralInCheck(Side side){
         Position generalPosition=getGeneralPosition(side);
@@ -182,29 +175,17 @@ public class Board {
 
 
         //TODO output data log should be added here
-        RecMove tempRec= new RecMove(fromPosition, toPosition);
-        recordedMoves.add(tempRec);
     }
 
     public int judgeGameOver(){
-
-        //The following are used for debug
-        List<Position> allLegalMoves=getAllLegalMoves(currentTurn);
-        System.out.println("All legal moves for "+currentTurn+":");
-        if (!allLegalMoves.isEmpty()) {
-            for(Position pos: allLegalMoves){
-                System.out.println(pos);
-            }
-        }
-
-        if(allLegalMoves.isEmpty()){
+        if(getThreatenedPositions(currentTurn)==null){
             if(isGeneralInCheck(currentTurn)){
                 //Current player is checkmated
                 return currentTurn== Side.RED? 2:1; //1 for Red wins, 2 for Black wins
             }
             else{
                 //Stalemate
-                return currentTurn== Side.RED? 3:4; //3 for Red stalemate, 4 for Black stalemate
+                return 0; //0 for draw
             }
         }
         return -1; //-1 for game not over
