@@ -83,13 +83,18 @@ public class RenderBoard {
         Circle tmp = new Circle();
         tmp.setFill(Color.web("#FFD963"));
         tmp.setRadius(GridWidth*0.4);
-        tmp.setLayoutX((y+1)*GridWidth);
-        tmp.setLayoutY((x+1)*GridWidth);
         tmp.setStroke(Paint.valueOf("#000000"));
         if(elements.game.getBoard().getSelectedPosition()!=null&&elements.game.getBoard().getSelectedPosition().equals(new Position(x,y))){
             tmp.setStrokeWidth(6);
         }else{
             tmp.setStrokeWidth(4);
+        }
+        if(elements.game.getBoard().getHoverPosition()!=null&&elements.game.getBoard().getHoverPosition().equals(new Position(x,y))){
+            tmp.setLayoutX((y+1.1)*GridWidth);
+            tmp.setLayoutY((x+0.9)*GridWidth);
+        }else{
+            tmp.setLayoutX((y+1)*GridWidth);
+            tmp.setLayoutY((x+1)*GridWidth);
         }
         Label tmplabel;
         switch (type){
@@ -136,8 +141,15 @@ public class RenderBoard {
         tmplabel.setPrefHeight(GridWidth);
         tmplabel.setAlignment(Pos.CENTER);
         tmplabel.setFont(tmpfont);
-        tmplabel.setLayoutX((y+0.5)*GridWidth);
-        tmplabel.setLayoutY((x+0.68)*GridWidth);
+        if(elements.game.getBoard().getHoverPosition()!=null&&elements.game.getBoard().getHoverPosition().equals(new Position(x,y))){
+            tmplabel.setLayoutX((y+0.6)*GridWidth);
+            tmplabel.setLayoutY((x+0.58)*GridWidth);
+
+        }else{
+            tmplabel.setLayoutX((y+0.5)*GridWidth);
+            tmplabel.setLayoutY((x+0.68)*GridWidth);
+
+        }
         tmplabel.setMouseTransparent(true);
 
         if(side==Side.RED)tmplabel.setTextFill(Color.web("#df0000"));
@@ -160,15 +172,15 @@ public class RenderBoard {
         Circle tmp = new Circle();
         tmp.setFill(Color.web("#EBF6FF"));
         tmp.setOpacity(0.5);
-        tmp.setRadius(GridWidth*0.4);
         tmp.setLayoutX((y+1)*GridWidth);
         tmp.setLayoutY((x+1)*GridWidth);
         tmp.setStrokeWidth(0);
-//        if(elements.game.getBoard().getSelectedPosition()!=null&&elements.game.getBoard().getSelectedPosition().equals(new Position(x,y))){
-//            tmp.setStrokeWidth(6);
-//        }else{
-//            tmp.setStrokeWidth(4);
-//        }
+        if(elements.game.getBoard().getHoverPosition()!=null&&elements.game.getBoard().getHoverPosition().equals(new Position(x,y))){
+            tmp.setRadius(GridWidth*0.5);
+        }else{
+            tmp.setRadius(GridWidth*0.4);
+        }
+        elements.BoardSurface.getChildren().add(tmp);
 
         tmp.setOnMouseClicked(event -> {
             if(elements.game.getGameStatus()!=GameStatus.ONGOING)
@@ -191,8 +203,5 @@ public class RenderBoard {
             GraphicController.refreshWindow(elements);
             event.consume();
         });
-
-        elements.BoardSurface.getChildren().add(tmp);
-
     }
 }

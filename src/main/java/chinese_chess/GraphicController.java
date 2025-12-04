@@ -12,6 +12,8 @@ import javafx.stage.Stage;
 public class GraphicController {
     static private double MENU_PADDING = ConstantValues.MENU_PADDING;
     private static GridPoint Selection = new GridPoint(-1,-1);
+    static double GridWidth=1.0;
+    public static boolean HoverChangedFlag = false;
 
     static GridPoint getSelection(){
         return Selection;
@@ -137,6 +139,26 @@ public class GraphicController {
         elements.ChessBoard.getChildren().add(elements.BoardSurface);
         elements.PaneChuhe.setMouseTransparent(true);
         elements.PaneHanjie.setMouseTransparent(true);
+
+        elements.BoardSurface.setOnMouseMoved(mouseEvent -> {
+            int Y = Math.toIntExact(Math.round(mouseEvent.getX() / GridWidth))-1;
+            int X = Math.toIntExact(Math.round(mouseEvent.getY() / GridWidth))-1;
+            double x = mouseEvent.getY();
+            double y = mouseEvent.getX();
+
+            if(((Y+1)*GridWidth-y)*((Y+1)*GridWidth-y)+
+               ((X+1)*GridWidth-x)*((X+1)*GridWidth-x)<=
+                    (0.4*GridWidth)*(0.4*GridWidth)){
+                elements.game.getBoard().setHoverPosition((new Position(X,Y)));
+                if(HoverChangedFlag){
+                    refreshWindow(elements);
+                    System.out.printf("Hovering (%d, %d)\n",X,Y);
+                    HoverChangedFlag=false;
+                }
+            }
+                else elements.game.getBoard().deHover();
+
+        });
     }
 
     static void refreshWindow(GraphicElements elements){
@@ -173,7 +195,7 @@ public class GraphicController {
 
 
         //画棋盘
-        double GridWidth = BoardWidth/10;
+        GridWidth = BoardWidth/10;
         RenderBoard.drawBoard(elements,GridWidth);
 
         //画棋子
