@@ -143,6 +143,7 @@ public class Board {
         }catch(Exception e){
             e.printStackTrace();
         }
+        currentViewingStep=moveHistory.size();
     }
 
     public void saveBoard(String filepath) throws Exception{
@@ -156,6 +157,9 @@ public class Board {
     public Piece getPieceAt(Position position) {
         int r=position.getRow();
         int c=position.getCol();
+        if(r<0||r>=ROWS||c<0||c>=COLS){
+            return null;
+        }
         return grid[r][c];
     }
 
@@ -202,6 +206,23 @@ public class Board {
             }
         }
         return uniqueThreatenedPositions;
+    }
+
+    public List<Position> getAllLegalMoves(Side side) throws Exception {
+        List<Position> allLegalMoves=new java.util.ArrayList<>();
+        for(int r=0; r<ROWS; r++){
+            for(int c=0; c<COLS; c++){
+                Piece piece=grid[r][c];
+                if(piece!=null && piece.side==side){
+                    Position piecePosition=new Position(r,c);
+                    List<Position> pieceLegalMoves=piece.getLegalMoves(this,piecePosition);
+                    if(pieceLegalMoves!=null){
+                        allLegalMoves.addAll(pieceLegalMoves);
+                    }
+                }
+            }
+        }
+        return allLegalMoves;
     }
 
 
@@ -340,8 +361,8 @@ public class Board {
         return currentViewingStep!=moveHistory.size();
     }
 
-    public int judgeGameOver(){
-        if(getThreatenedPositions(currentTurn)==null){
+    public int judgeGameOver() throws Exception {
+        if(getAllLegalMoves(currentTurn)==null){
             if(isGeneralInCheck(currentTurn)){
                 //Current player is checkmated
                 return currentTurn== Side.RED? 2:1; //1 for Red wins, 2 for Black wins

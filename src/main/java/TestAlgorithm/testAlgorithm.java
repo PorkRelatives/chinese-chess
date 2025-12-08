@@ -67,6 +67,18 @@ public class testAlgorithm {
                     System.out.println();
                     continue;
                 }
+                if(input.equals("import")){
+                    System.out.println("Please enter the file path to import from:");
+                    String filepath=sc.nextLine();
+                    game.getBoard().loadBoardFromFile(filepath);
+                    game.printBoard();
+                    System.out.printf("Now it is %s's turn",game.getBoard().getCurrentTurn());
+                    if(game.getBoard().isGeneralInCheck(game.getBoard().getCurrentTurn())){
+                        System.out.println(" -- Check!");
+                    }
+                    System.out.println();
+                    continue;
+                }
 
                 System.out.println("Invalid input. Please enter row and column separated by a space.");
                 continue;

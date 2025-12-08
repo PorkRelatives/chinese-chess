@@ -19,6 +19,7 @@ public class Position implements Serializable {
     }
 
     public boolean equals(Position other){
+        if(other==null) return false;
         return this.row==other.row && this.col==other.col;
     }
 
