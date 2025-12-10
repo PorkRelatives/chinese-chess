@@ -58,6 +58,21 @@ public class testAlgorithm {
                     continue;
                 }
 
+                if(input.equals("viewstep")){
+                    System.out.println("Currently viewing step:"+game.getBoard().getCurrentViewingStep());
+                }
+
+                if(input.equals("viewinitial")){
+                    game.getBoard().returnViewToInitial();
+                    game.printBoard();
+                    System.out.printf("Now it is %s's turn", game.getBoard().getCurrentTurn());
+                    if (game.getBoard().isGeneralInCheck(game.getBoard().getCurrentTurn())) {
+                        System.out.println(" -- Check!");
+                    }
+                    System.out.println();
+                    continue;
+                }
+
                 if(input.equals("exitview")){
                     game.getBoard().returnToLatestMove();
                     game.printBoard();
