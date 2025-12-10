@@ -42,9 +42,12 @@ public class Board {
 
     public int currentViewingStep=0;
 
+    public final String username;
 
-    public Board(){
+
+    public Board(String username){
         initializeBoard();
+        this.username=username;
     }
 
     public Side getCurrentTurn(){
@@ -126,8 +129,11 @@ public class Board {
 
     }
 
-    public void loadBoardFromFile(String chinese_chess_save_dat) throws Exception {
-        moveHistory=dataSaver.loadGameData(chinese_chess_save_dat);
+
+    // save and load functions
+
+    public void loadBoardFromFile(String username,String path) throws Exception {
+        moveHistory=dataSaver.loadGameData(username,path);
         //Reinitialize the board
         for(int r=0; r<ROWS; r++){
             for(int c=0; c<COLS; c++){
@@ -147,12 +153,12 @@ public class Board {
         currentViewingStep=moveHistory.size();
     }
 
-    public void saveBoard(String filepath) throws Exception{
-        dataSaver.saveGameData(moveHistory,filepath);
+    public void saveBoard(String username,String filepath) throws Exception{
+        dataSaver.saveGameData(username,moveHistory,filepath);
     }
 
-    public void autoSaveBoard() throws Exception{
-        autoDataSaver.autoSaveGameData(moveHistory);
+    public void autoSaveBoard(String username) throws Exception{
+        autoDataSaver.autoSaveGameData(username,moveHistory);
     }
 
     public Piece getPieceAt(Position position) {
@@ -241,6 +247,8 @@ public class Board {
         return false;
     }
 
+    // move piece and regret move
+
     public void movePiece(Position fromPosition, Position toPosition, boolean formal) throws Exception {
         int fromRow=fromPosition.getRow();
         int fromCol=fromPosition.getCol();
@@ -256,7 +264,7 @@ public class Board {
             MoveRecord record=new MoveRecord(fromPosition, toPosition);
             this.moveHistory.add(record);
             //this.saveBoard("chinese_chess_save.dat");
-            this.autoSaveBoard();
+            this.autoSaveBoard(username);
             currentViewingStep=moveHistory.size();
         }
 
@@ -291,8 +299,10 @@ public class Board {
         currentViewingStep=moveHistory.size();
 
         //this.saveBoard("chinese_chess_save.dat");
-        this.autoSaveBoard();
+        this.autoSaveBoard(username);
     }
+
+    // view function
 
     public void viewPreviousMove(){
         if(currentViewingStep==0){
@@ -361,9 +371,26 @@ public class Board {
 
     }
 
+    public void returnViewToInitial(){
+        if(currentViewingStep==0){
+            System.out.println("Already initial");
+            return;
+        }
+
+        currentViewingStep=0;
+
+        initializeBoard();
+    }
+
+    public int getCurrentViewingStep(){
+        return currentViewingStep;
+    }
+
     public boolean isViewing(){
         return currentViewingStep!=moveHistory.size();
     }
+
+    //win lose judgement
 
     public int judgeGameOver() throws Exception {
         if(getAllLegalMoves(currentTurn)==null){
