@@ -263,14 +263,15 @@ public class GraphicController {
 
         elements.isViewingRecord=false;
         elements.ViewRecord = new Button("复盘");
-        elements.ViewRecord.setOnAction(actionEvent -> {
+        elements.ViewRecord.setOnAction(e-> {
             try {
-                MenuController.initGame(stage,elements,TypeOfInit.ViewRecord);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+                MenuController.handleViewRecordButton(stage,elements);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
             }
         });
         elements.GameMenu.getChildren().add(elements.ViewRecord);
+        elements.game.isViewingRecord=false;
     }
 
     public static void refreshWindow(GraphicElements elements) throws Exception {
