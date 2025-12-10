@@ -126,6 +126,9 @@ public class Board {
 
     }
 
+
+    // save and load functions
+
     public void loadBoardFromFile(String chinese_chess_save_dat) throws Exception {
         moveHistory=dataSaver.loadGameData(chinese_chess_save_dat);
         //Reinitialize the board
@@ -241,6 +244,8 @@ public class Board {
         return false;
     }
 
+    // move piece and regret move
+
     public void movePiece(Position fromPosition, Position toPosition, boolean formal) throws Exception {
         int fromRow=fromPosition.getRow();
         int fromCol=fromPosition.getCol();
@@ -293,6 +298,8 @@ public class Board {
         //this.saveBoard("chinese_chess_save.dat");
         this.autoSaveBoard();
     }
+
+    // view function
 
     public void viewPreviousMove(){
         if(currentViewingStep==0){
@@ -361,9 +368,26 @@ public class Board {
 
     }
 
+    public void returnViewToInitial(){
+        if(currentViewingStep==0){
+            System.out.println("Already initial");
+            return;
+        }
+
+        currentViewingStep=0;
+
+        initializeBoard();
+    }
+
+    public int getCurrentViewingStep(){
+        return currentViewingStep;
+    }
+
     public boolean isViewing(){
         return currentViewingStep!=moveHistory.size();
     }
+
+    //win lose judgement
 
     public int judgeGameOver() throws Exception {
         if(getAllLegalMoves(currentTurn)==null){
