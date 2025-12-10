@@ -133,11 +133,16 @@ public class Board {
     // save and load functions
 
     public void loadBoardFromFile(String username,String path) throws Exception {
-        moveHistory=dataSaver.loadGameData(username,path);
-        if(moveHistory==null){
-            //TODO: 增加用户读取失败的错误提示
+
+        List<MoveRecord>tempMoveHistory=dataSaver.loadGameData(username,path);;
+        if(tempMoveHistory==null){
+            System.out.println("load failed");
             return;
         }
+
+        moveHistory=dataSaver.loadGameData(username,path);
+
+
         //Reinitialize the board
         for(int r=0; r<ROWS; r++){
             for(int c=0; c<COLS; c++){
@@ -392,6 +397,10 @@ public class Board {
 
     public boolean isViewing(){
         return currentViewingStep!=moveHistory.size();
+    }
+
+    public Position previousStepFrom(){
+        return moveHistory.get(currentViewingStep).fromPosition;
     }
 
     //win lose judgement
