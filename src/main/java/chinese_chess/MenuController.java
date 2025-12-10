@@ -29,6 +29,15 @@ public class MenuController {
             System.out.println(file);
             elements.game.getBoard().loadBoardFromFile(file.getPath());
             GraphicController.refreshWindow(elements);
+        }else if(type==TypeOfInit.ViewRecord){
+            System.out.println("复盘开始");
+            FileChooser filechooser= new FileChooser();
+            filechooser.setTitle("选取存档");
+            File file = filechooser.showOpenDialog(stage);
+            System.out.println(file);
+            elements.game.getBoard().loadBoardFromFile(file.getPath());
+            //TODO: 做加载动作
+            GraphicController.refreshWindow(elements);
         }
     }
     static void saveGame(GraphicElements elements, Stage stage)throws Exception{

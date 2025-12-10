@@ -47,4 +47,8 @@ public class GraphicElements {
     public String Username;
     public Label UserLabel;
     public Button Register;
+
+    public boolean isViewingRecord;//是否是在看demo
+    public Button ViewRecord,LastStep,NextStep;//复盘
+    public Label CurrentStep;
 }
