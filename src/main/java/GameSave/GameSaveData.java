@@ -1,6 +1,8 @@
 package GameSave;
 
 
+import Core.Board;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -10,8 +12,31 @@ public class GameSaveData implements Serializable {
     public final String username;
     public final List<MoveRecord> moveHistory;
 
-    public GameSaveData(String username, List<MoveRecord> moveHistory) {
+    public final Board initialBoard;
+    public final Board finalBoard;
+
+
+    public GameSaveData(String username, List<MoveRecord> moveHistory,Board initialBoard) throws Exception {
         this.username = username;
         this.moveHistory = moveHistory;
+        this.initialBoard=initialBoard;
+
+        Board tempBoard=initialBoard;
+        for(MoveRecord moveRecord : moveHistory){
+            tempBoard.movePiece(moveRecord.fromPosition,moveRecord.toPosition,false);
+        }
+        this.finalBoard=tempBoard;
+    }
+
+    public GameSaveData(String username, List<MoveRecord> moveHistory) throws Exception {
+        this.username = username;
+        this.moveHistory = moveHistory;
+        this.initialBoard=new Board(username);
+
+        Board tempBoard=initialBoard;
+        for(MoveRecord moveRecord : moveHistory){
+            tempBoard.movePiece(moveRecord.fromPosition,moveRecord.toPosition,false);
+        }
+        this.finalBoard=tempBoard;
     }
 }
