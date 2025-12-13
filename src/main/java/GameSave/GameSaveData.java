@@ -15,6 +15,8 @@ public class GameSaveData implements Serializable {
     public final Board initialBoard;
     public final Board finalBoard;
 
+    public GameSavePublicness publicness;
+
 
     public GameSaveData(String username, List<MoveRecord> moveHistory,Board initialBoard) throws Exception {
         this.username = username;
@@ -26,6 +28,7 @@ public class GameSaveData implements Serializable {
             tempBoard.movePiece(moveRecord.fromPosition,moveRecord.toPosition,false);
         }
         this.finalBoard=tempBoard;
+        publicness=GameSavePublicness.PRIVATE;
     }
 
     public GameSaveData(String username, List<MoveRecord> moveHistory) throws Exception {
@@ -38,5 +41,10 @@ public class GameSaveData implements Serializable {
             tempBoard.movePiece(moveRecord.fromPosition,moveRecord.toPosition,false);
         }
         this.finalBoard=tempBoard;
+        publicness=GameSavePublicness.PRIVATE;
+    }
+
+    public void setPublicness(GameSavePublicness publicness){
+        this.publicness=publicness;
     }
 }
