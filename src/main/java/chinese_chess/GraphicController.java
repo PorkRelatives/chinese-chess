@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class GraphicController {
@@ -318,6 +319,8 @@ public class GraphicController {
         });
         elements.GameMenu.getChildren().add(elements.ViewRecord);
         elements.game.isViewingRecord=false;
+        elements.ChessFont = Font.loadFont("file:HZW005.ttf",20);
+
     }
 
     public static void refreshWindow(GraphicElements elements) throws Exception {

@@ -10,6 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
 
 public class GraphicElements {
     public Pane WindowRoot;
@@ -57,5 +58,6 @@ public class GraphicElements {
     public HBox RecordControlButtons;
     public Label CurrentStep;
 
-    public Button BlackSurrender, RedSurrender, BlackCease, RedCease;//TODO: 投降和求和
+    public Button BlackSurrender, RedSurrender;//投降和求和
+    public Font ChessFont;
 }
