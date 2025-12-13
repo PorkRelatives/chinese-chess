@@ -1,11 +1,13 @@
 package TestAlgorithm;
 //this file is now for test only
 import Game.Game;
+import GameSave.MoveRecord;
 import data.Side;
 import pieces.Piece;
 import data.Position;
 import java.util.List;
 import java.util.Scanner;
+import AIMove.AIMove;
 
 public class testAlgorithm {
     public static void main(String[] args) throws Exception {
@@ -18,6 +20,9 @@ public class testAlgorithm {
         if(game.getBoard().isGeneralInCheck(game.getBoard().getCurrentTurn())){
             System.out.println(" -- Check!");
         }
+
+
+        AIMove bot=new AIMove(2);
 
 
         Scanner sc= new Scanner(System.in);
@@ -114,6 +119,13 @@ public class testAlgorithm {
                     }
                     System.out.println();
                     continue;
+                }
+
+
+                if(input.equals("hint")){
+                    System.out.printf("current best move is ");
+                    MoveRecord bestmov= bot.findBestMove(game.getBoard(),game.getBoard().getCurrentTurn());
+                    System.out.println(bestmov.fromPosition+"to"+bestmov.toPosition);
                 }
 
                 System.out.println("Invalid input. Please enter row and column separated by a space.");
