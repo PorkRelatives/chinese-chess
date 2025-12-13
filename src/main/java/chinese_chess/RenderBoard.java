@@ -100,12 +100,7 @@ public class RenderBoard {
         Label tmplabel;
         tmplabel=getPieceLabel(type,side);
 
-        /*for(String u:Font.getFontNames()){
-            System.out.println(u);
-        }*/
-        //TODO: 改用更好的字体解决排版问题
-        Font tmpfont = Font.font("华文隶书",GridWidth/1.9);
-        //tmpfont.
+        Font tmpfont = Font.loadFont("file:HZW005.ttf",GridWidth/1.9);
 
 
         tmplabel.setPrefWidth(GridWidth);
@@ -114,12 +109,11 @@ public class RenderBoard {
         tmplabel.setFont(tmpfont);
         if(elements.game.getBoard().getHoverPosition()!=null&&elements.game.getBoard().getHoverPosition().equals(new Position(x,y))){
             tmplabel.setLayoutX((y+0.08)*GridWidth+tmpfont.getSize());
-            tmplabel.setLayoutY((x+0.04)*GridWidth+tmpfont.getSize());
-
+            tmplabel.setLayoutY((x-0.15)*GridWidth+tmpfont.getSize());
         }
         else{
             tmplabel.setLayoutX((y-0.02)*GridWidth+tmpfont.getSize());
-            tmplabel.setLayoutY((x+0.14)*GridWidth+tmpfont.getSize());
+            tmplabel.setLayoutY((x-0.05)*GridWidth+tmpfont.getSize());
 
         }
         tmplabel.setMouseTransparent(true);
@@ -209,14 +203,13 @@ public class RenderBoard {
         Label tmplabel;
         tmplabel=getPieceLabel(type,side);
         tmplabel.setOpacity(0.4);
-        //TODO: 改用更好的字体解决排版问题
-        Font tmpfont = Font.font("华文隶书",GridWidth/1.9);
+        Font tmpfont = Font.loadFont("file:HZW005.ttf",GridWidth/1.9);
         tmplabel.setPrefWidth(GridWidth);
         tmplabel.setPrefHeight(GridWidth);
         tmplabel.setAlignment(Pos.CENTER);
         tmplabel.setFont(tmpfont);
         tmplabel.setLayoutX((y-0.02)*GridWidth+tmpfont.getSize());
-        tmplabel.setLayoutY((x+0.14)*GridWidth+tmpfont.getSize());
+        tmplabel.setLayoutY((x-0.05)*GridWidth+tmpfont.getSize());
         tmplabel.setMouseTransparent(true);
         if(side==Side.RED)tmplabel.setTextFill(Color.web("#df0000"));
         if(side==Side.BLACK)tmplabel.setTextFill(Color.BLACK);
@@ -255,16 +248,16 @@ public class RenderBoard {
                 else tmplabel = new Label("仕");
                 break;
             case CHARIOT:
-                if(side==Side.BLACK)tmplabel = new Label("车");
-                else tmplabel = new Label("车");
+                if(side==Side.BLACK)tmplabel = new Label("車");
+                else tmplabel = new Label("車");
                 break;
             case SOLDIER:
                 if(side==Side.BLACK)tmplabel = new Label("兵");
                 else tmplabel = new Label("卒");
                 break;
             case HORSE:
-                if(side==Side.BLACK)tmplabel = new Label("马");
-                else tmplabel = new Label("马");
+                if(side==Side.BLACK)tmplabel = new Label("馬");
+                else tmplabel = new Label("馬");
                 break;
             case ELEPHANT:
                 if(side==Side.BLACK)tmplabel = new Label("象");
