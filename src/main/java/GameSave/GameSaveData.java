@@ -12,8 +12,8 @@ public class GameSaveData implements Serializable {
     public final String username;
     public final List<MoveRecord> moveHistory;
 
-    public final Board initialBoard;
-    public final Board finalBoard;
+    public transient Board initialBoard;
+    public transient Board finalBoard;
 
     public GameSavePublicness publicness;
 
@@ -23,7 +23,7 @@ public class GameSaveData implements Serializable {
         this.moveHistory = moveHistory;
         this.initialBoard=initialBoard;
 
-        Board tempBoard=initialBoard;
+        Board tempBoard = new Board(username);
         for(MoveRecord moveRecord : moveHistory){
             tempBoard.movePiece(moveRecord.fromPosition,moveRecord.toPosition,false);
         }
