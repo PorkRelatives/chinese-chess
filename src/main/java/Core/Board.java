@@ -9,6 +9,7 @@ import data.GameStatus;
 import data.InitialPositions;
 import data.Side;
 import data.Position;
+import javafx.geometry.Pos;
 import pieces.GeneralPiece;
 import pieces.Piece;
 
@@ -61,7 +62,7 @@ public class Board {
         }
     }
 
-    private void initializeBoard(){
+    public void initializeBoard(){
         //make sure curren turn is red
         this.currentTurn=Side.RED;
 
@@ -277,6 +278,12 @@ public class Board {
             currentViewingStep=moveHistory.size();
         }
 
+    }
+
+    public void forceMovePiece(Position fromPosition, Position toPosition){
+        Piece piece = getPieceAt(fromPosition);
+        setPieceAt(toPosition, piece);
+        setPieceAt(fromPosition, null);
     }
 
     public void regretLastMove() throws Exception {

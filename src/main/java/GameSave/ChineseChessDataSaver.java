@@ -1,5 +1,6 @@
 package GameSave;
 
+import Core.Board;
 import data.Position;
 
 import java.io.*;
@@ -176,6 +177,18 @@ public class ChineseChessDataSaver {
         GameSaveData gameData = (GameSaveData) ois.readObject();
         ois.close();
         bis.close();
+
+        Board tempInitialBoard=gameData.initialBoard;
+        Board tempFinalBoard=gameData.finalBoard;
+        List<MoveRecord> tempMoveHistory=gameData.moveHistory;
+        for(MoveRecord moveRecord:tempMoveHistory){
+            tempInitialBoard.movePiece(moveRecord.fromPosition,moveRecord.toPosition,false);
+        }
+        if(!tempFinalBoard.equals(tempFinalBoard)){
+            System.out.println("File been tampered, load failed");
+            return null;
+        }
+
 
         if(!username.equals(gameData.username)){
             System.out.println("access denied");
