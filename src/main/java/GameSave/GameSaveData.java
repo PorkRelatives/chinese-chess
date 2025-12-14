@@ -25,7 +25,7 @@ public class GameSaveData implements Serializable {
 
         Board tempBoard = new Board(username);
         for(MoveRecord moveRecord : moveHistory){
-            tempBoard.movePiece(moveRecord.fromPosition,moveRecord.toPosition,false);
+            tempBoard.movePiece(moveRecord.fromPosition,moveRecord.toPosition,false,true);
         }
         this.finalBoard=tempBoard;
         publicness=GameSavePublicness.PRIVATE;
@@ -38,7 +38,7 @@ public class GameSaveData implements Serializable {
 
         Board tempBoard=initialBoard;
         for(MoveRecord moveRecord : moveHistory){
-            tempBoard.movePiece(moveRecord.fromPosition,moveRecord.toPosition,false);
+            tempBoard.movePiece(moveRecord.fromPosition,moveRecord.toPosition,false, true);
         }
         this.finalBoard=tempBoard;
         publicness=GameSavePublicness.PRIVATE;

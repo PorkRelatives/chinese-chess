@@ -133,12 +133,12 @@ public class Board {
 
     // save and load functions
 
-    public void loadBoardFromFile(String username,String path) throws Exception {
+    public boolean loadBoardFromFile(String username,String path) throws Exception {
 
         List<MoveRecord>tempMoveHistory=dataSaver.loadGameData(username,path);;
         if(tempMoveHistory==null){
             System.out.println("load failed");
-            return;
+            return false;
         }
 
         moveHistory=dataSaver.loadGameData(username,path);
@@ -153,14 +153,16 @@ public class Board {
         initializeBoard();
         //Replay the moves
         try{
+
             for(MoveRecord record: moveHistory){
-                movePiece(record.fromPosition, record.toPosition,false);
+                movePiece(record.fromPosition, record.toPosition,false,true);
                 switchTurn();
             }
         }catch(Exception e){
             e.printStackTrace();
         }
         currentViewingStep=moveHistory.size();
+        return true;
     }
 
     public void saveBoard(String username,String filepath) throws Exception{
@@ -259,7 +261,7 @@ public class Board {
 
     // move piece and regret move
 
-    public void movePiece(Position fromPosition, Position toPosition, boolean formal) throws Exception {
+    public void movePiece(Position fromPosition, Position toPosition, boolean formal, boolean isGuest) throws Exception {
         int fromRow=fromPosition.getRow();
         int fromCol=fromPosition.getCol();
         if (grid[fromRow][fromCol]==null){
@@ -274,7 +276,8 @@ public class Board {
             MoveRecord record=new MoveRecord(fromPosition, toPosition);
             this.moveHistory.add(record);
             //this.saveBoard("chinese_chess_save.dat");
-            this.autoSaveBoard(username);
+
+            if(false==isGuest)this.autoSaveBoard(username);
             currentViewingStep=moveHistory.size();
         }
 
@@ -288,7 +291,7 @@ public class Board {
         this.moveHistory.add(record);
     }
 
-    public void regretLastMove() throws Exception {
+    public void regretLastMove(boolean isGuest) throws Exception {
         if(moveHistory.size()==0){
             System.out.println("No moves to regret!");
             return;
@@ -306,7 +309,7 @@ public class Board {
         //Replay the moves
         try{
             for(MoveRecord record: moveHistory){
-                movePiece(record.fromPosition, record.toPosition,false);
+                movePiece(record.fromPosition, record.toPosition,false,isGuest);
                 switchTurn();
             }
         }
@@ -317,7 +320,9 @@ public class Board {
         currentViewingStep=moveHistory.size();
 
         //this.saveBoard("chinese_chess_save.dat");
-        this.autoSaveBoard(username);
+        if(false==isGuest){
+            this.autoSaveBoard(username);
+        }
     }
 
     // view function
@@ -334,7 +339,7 @@ public class Board {
         try{
             for(int i=0;i<currentViewingStep;i++){
                 MoveRecord record=moveHistory.get(i);
-                movePiece(record.fromPosition, record.toPosition,false);
+                movePiece(record.fromPosition, record.toPosition,false, true);
                 switchTurn();
             }
         }
@@ -357,7 +362,7 @@ public class Board {
         try{
             for(int i=0;i<currentViewingStep;i++){
                 MoveRecord record=moveHistory.get(i);
-                movePiece(record.fromPosition, record.toPosition,false);
+                movePiece(record.fromPosition, record.toPosition,false, true);
                 switchTurn();
             }
         }
@@ -379,7 +384,7 @@ public class Board {
         try{
             for(int i=0;i<currentViewingStep;i++){
                 MoveRecord record=moveHistory.get(i);
-                movePiece(record.fromPosition, record.toPosition,false);
+                movePiece(record.fromPosition, record.toPosition,false, true);
                 switchTurn();
             }
         }

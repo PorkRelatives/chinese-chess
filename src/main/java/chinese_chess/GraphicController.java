@@ -1,6 +1,7 @@
 package chinese_chess;
 
 import AIMove.AIMove;
+import Game.Game;
 import GameDialogues.GameDialogue;
 import GameSave.MoveRecord;
 import UserData.UserDataKeeper;
@@ -30,6 +31,13 @@ public class GraphicController {
         Selection = u;
     }
     static void initGraphics(Stage stage, GraphicElements elements) throws Exception {
+
+        //先读取登录态再开始游戏
+        elements.userDataKeeper = new UserDataKeeper();
+        elements.Username=elements.userDataKeeper.loadLogState();
+        elements.game=new Game(elements.Username);
+
+
         elements.WindowRoot = new Pane();
         elements.WindowRoot.setStyle("-fx-background-color: black");
 
@@ -93,8 +101,6 @@ public class GraphicController {
         elements.RedMenu.getChildren().add(elements.rLabel);
 
         //提取登录态
-        elements.userDataKeeper = new UserDataKeeper();
-        elements.Username=elements.userDataKeeper.loadLogState();
         elements.UserLabel = new Label();
         if(elements.Username.equals(new String(""))){
             elements.UserLabel.setText("用户：游客");
@@ -147,6 +153,10 @@ public class GraphicController {
         elements.GameMenu.getChildren().add(elements.NewGame);
         elements.LoadFromSave = new Button("加载残局");
         elements.LoadFromSave.setOnAction(event -> {
+            if(elements.Username.equals(new String(""))&&elements.game.getGameStatus()!=GameStatus.ALTERING){
+                elements.Dialogue.startInfoDialogue(elements,"游客不能加载残局","请先登录",stage);
+                return;
+            }
             try {
                 MenuController.initGame(stage,elements,TypeOfInit.FromSave);
             } catch (Exception e) {
@@ -155,6 +165,10 @@ public class GraphicController {
         });
         elements.SaveGame = new Button("保存残局");
         elements.SaveGame.setOnAction(event -> {
+            if(elements.Username.equals(new String(""))&&elements.game.getGameStatus()!=GameStatus.ALTERING){
+                elements.Dialogue.startInfoDialogue(elements,"游客不能保存残局","请先登录",stage);
+                return;
+            }
             try {
                 MenuController.saveGame(elements,stage);
             }catch(Exception e){
@@ -225,8 +239,9 @@ public class GraphicController {
         elements.BlackMenu.getChildren().add(elements.BlackRegret);
         elements.RedMenu.getChildren().add(elements.RedRegret);
         elements.BlackRegret.setOnAction(event -> {
+            boolean isGuest = elements.Username.equals(new String(""));
             try {
-                elements.game.getBoard().regretLastMove();
+                elements.game.getBoard().regretLastMove(isGuest);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -237,8 +252,9 @@ public class GraphicController {
             }
         });
         elements.RedRegret.setOnAction(event -> {
+            boolean isGuest = elements.Username.equals(new String(""));
             try {
-                elements.game.getBoard().regretLastMove();
+                elements.game.getBoard().regretLastMove(isGuest);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -371,6 +387,10 @@ public class GraphicController {
         elements.isViewingRecord=false;
         elements.ViewRecord = new Button("复盘");
         elements.ViewRecord.setOnAction(e-> {
+            if(elements.Username.equals(new String(""))&&elements.game.getGameStatus()!=GameStatus.ALTERING){
+                elements.Dialogue.startInfoDialogue(elements,"游客不能复盘","请先登录",stage);
+                return;
+            }
             try {
                 MenuController.handleViewRecordButton(stage,elements);
             } catch (Exception ex) {

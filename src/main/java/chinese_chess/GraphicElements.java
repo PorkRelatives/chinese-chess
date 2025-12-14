@@ -41,7 +41,7 @@ public class GraphicElements {
 
     public Game game;
 
-    GameDialogue Dialogue;
+    public GameDialogue Dialogue;
     public String usernameCache;//用于传递输入框文字
     public String passwordCache;//用于传递输入框文字
 
