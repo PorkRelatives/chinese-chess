@@ -62,6 +62,9 @@ public class Game{
                 //Select this piece
                 board.setSelectedPosition(position);
             }
+            if(getGameStatus()==GameStatus.ALTERING){
+                board.setSelectedPosition(position);
+            }
         }
         else{
             //A piece is already selected
@@ -73,14 +76,14 @@ public class Game{
                 board.setSelectedPosition(null);
                 selectedPiece.isSelected=false;
             }
-            else if(board.getPieceAt(position)!=null&&selectedPiece.side.equals(board.getPieceAt(position).side)){
+            else if(board.getPieceAt(position)!=null&&selectedPiece.side.equals(board.getPieceAt(position).side)&&getGameStatus()!=GameStatus.ALTERING){
                 board.setSelectedPosition(position);
                 selectedPiece.isSelected=false;
             }
             else{
                 //Try to move the piece to the new position
                 List<Position> legalMoves=selectedPiece.getLegalMoves(board,selectedPosition);
-                if(positionInList(position,legalMoves)){
+                if(positionInList(position,legalMoves)||getGameStatus()==GameStatus.ALTERING){
                     //Move is legal
                     board.movePiece(selectedPosition,position,true);
                     //Deselect the piece after moving

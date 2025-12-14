@@ -371,27 +371,29 @@ public class GraphicController {
         elements.ChessFont = Font.loadFont("file:HZW005.ttf",20);
 
         elements.aiMove = new AIMove(2);
+
+        elements.Altermode = new Button("摆棋");
+        elements.GameMenu.getChildren().add(elements.Altermode);
+        elements.Altermode.setOnAction(actionEvent -> {
+            if(elements.game.getGameStatus()==GameStatus.ALTERING){
+                elements.game.setGameStatus(GameStatus.ONGOING);
+                elements.Altermode.setText("摆棋");
+            }else{
+                elements.game.setGameStatus(GameStatus.ALTERING);
+                elements.Altermode.setText("退出摆棋模式");
+            }
+            try {
+                GraphicController.refreshWindow(elements);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public static void refreshWindow(GraphicElements elements) throws Exception {
         if(elements.game.getGameStatus()== GameStatus.ONGOING){
-            if(elements.game.getBoard().getCurrentTurn().equals(Side.BLACK)){
-                elements.WhosTurn.setText("黑方行棋");
-                if(elements.game.isViewingRecord==false){
-                    elements.BlackRegret.setDisable(true);
-                    elements.RedRegret.setDisable(false);
-                    elements.BlackAIAssist.setDisable(false);
-                    elements.RedAIAssist.setDisable(true);
-                }
-            }else{
-                elements.WhosTurn.setText("红方行棋");
-                if(elements.game.isViewingRecord==false){
-                    elements.BlackRegret.setDisable(false);
-                    elements.RedRegret.setDisable(true);
-                    elements.BlackAIAssist.setDisable(true);
-                    elements.RedAIAssist.setDisable(false);
-                }
-            }
+            elements.Altermode.setText("摆棋");
+            MenuController.activatePlayerButtons(elements);
         }else if(elements.game.getGameStatus()==GameStatus.RED_WIN){
             elements.WhosTurn.setText("红方胜利");
             MenuController.disableAllPlayerButtons(elements);
@@ -400,6 +402,9 @@ public class GraphicController {
             MenuController.disableAllPlayerButtons(elements);
         }else if(elements.game.getGameStatus()==GameStatus.TIE){
             elements.WhosTurn.setText("和棋");
+            MenuController.disableAllPlayerButtons(elements);
+        }else if(elements.game.getGameStatus()==GameStatus.ALTERING){
+            elements.Altermode.setText("退出摆棋模式");
             MenuController.disableAllPlayerButtons(elements);
         }
         if(elements.game.getBoard().moveHistory.isEmpty()==true){
@@ -455,11 +460,23 @@ public class GraphicController {
         }
 
         //画指示器
-        if(elements.game.getBoard().getSelectedPosition()!=null){
-            for (var u : elements.game.getBoard().getPieceAt(elements.game.getBoard().getSelectedPosition()).getLegalMoves(elements.game.getBoard(),elements.game.getBoard().getSelectedPosition())){
-                RenderBoard.drawMoveIndicator(elements,u.getRow(),u.getCol(),GridWidth);
+
+        if(elements.game.getGameStatus()==GameStatus.ALTERING){
+            for (int i = 0; i <=9 ; i++) {
+                for (int j = 0; j <= 8; j++) {
+                    if(elements.game.getBoard().getSelectedPosition()!=null&&elements.game.getBoard().getSelectedPosition().equals(new Position(i,j))==false)
+                        RenderBoard.drawMoveIndicator(elements,i,j,GridWidth);
+                }
+            }
+        }else{
+            if(elements.game.getBoard().getSelectedPosition()!=null){
+                for (var u : elements.game.getBoard().getPieceAt(elements.game.getBoard().getSelectedPosition()).getLegalMoves(elements.game.getBoard(),elements.game.getBoard().getSelectedPosition())){
+                    RenderBoard.drawMoveIndicator(elements,u.getRow(),u.getCol(),GridWidth);
+                }
             }
         }
+
+
         //上一步起点
         Position prev = elements.game.getBoard().previousStepFrom();
         Position curr = elements.game.getBoard().previousStepTo();

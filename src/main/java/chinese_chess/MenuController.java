@@ -2,6 +2,8 @@ package chinese_chess;
 
 import Game.Game;
 import GameSave.ChineseChessDataSaver;
+import data.GameStatus;
+import data.Side;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -28,6 +30,7 @@ public class MenuController {
             elements.BlackAskTie.setDisable(false);
             elements.RedSurrender.setDisable(false);
             elements.RedAskTie.setDisable(false);
+            elements.game.setGameStatus(GameStatus.ONGOING);
 
             GraphicController.refreshWindow(elements);
             /*从头开始一个游戏*/
@@ -145,6 +148,29 @@ public class MenuController {
         for(var u:elements.RedMenu.getChildren()){
             if(u instanceof Button){
                 u.setDisable(true);
+            }
+        }
+    }
+    static void activatePlayerButtons(GraphicElements elements){
+        elements.BlackSurrender.setDisable(false);
+        elements.RedSurrender.setDisable(false);
+        elements.BlackAskTie.setDisable(false);
+        elements.RedAskTie.setDisable(false);
+        if(elements.game.getBoard().getCurrentTurn().equals(Side.BLACK)){
+            elements.WhosTurn.setText("黑方行棋");
+            if(elements.game.isViewingRecord==false){
+                elements.BlackRegret.setDisable(true);
+                elements.RedRegret.setDisable(false);
+                elements.BlackAIAssist.setDisable(false);
+                elements.RedAIAssist.setDisable(true);
+            }
+        }else{
+            elements.WhosTurn.setText("红方行棋");
+            if(elements.game.isViewingRecord==false){
+                elements.BlackRegret.setDisable(false);
+                elements.RedRegret.setDisable(true);
+                elements.BlackAIAssist.setDisable(true);
+                elements.RedAIAssist.setDisable(false);
             }
         }
     }
