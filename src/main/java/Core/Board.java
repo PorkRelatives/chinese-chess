@@ -1,5 +1,6 @@
 package Core;
 
+import GameDialogues.GameDialogue;
 import GameSave.AutoSaver;
 import GameSave.MoveRecord;
 import GameSave.ChineseChessDataSaver;
@@ -133,12 +134,16 @@ public class Board {
 
     // save and load functions
 
-    public boolean loadBoardFromFile(String username,String path) throws Exception {
-
-        List<MoveRecord>tempMoveHistory=dataSaver.loadGameData(username,path);;
+    public void loadBoardFromFile(String username,String path) throws Exception {
+        List<MoveRecord> tempMoveHistory;
+        try {
+            tempMoveHistory = dataSaver.loadGameData(username, path);
+        }catch (Exception e){
+            throw e;
+        }
         if(tempMoveHistory==null){
             System.out.println("load failed");
-            return false;
+            return;
         }
 
         moveHistory=dataSaver.loadGameData(username,path);
@@ -162,7 +167,7 @@ public class Board {
             e.printStackTrace();
         }
         currentViewingStep=moveHistory.size();
-        return true;
+        return;
     }
 
     public void saveBoard(String username,String filepath) throws Exception{

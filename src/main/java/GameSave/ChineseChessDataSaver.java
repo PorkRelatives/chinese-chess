@@ -126,7 +126,13 @@ public class ChineseChessDataSaver {
     @SuppressWarnings("unchecked") // Safe cast after ObjectInputStream reads
     public List<MoveRecord> loadGameData(String username, String filepath) throws Exception {
         System.out.println("--- Loading and Validating Chinese Chess Move History for "+username+"---");
-        Path path = Paths.get(filepath);
+        Path path = null;
+        try{
+             path = Paths.get(filepath);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+            return null;
+        }
         if (!Files.exists(path)) {
             System.out.println("Error: File not found at " + filepath);
             return null;
@@ -146,7 +152,7 @@ public class ChineseChessDataSaver {
 
         if (separatorIndex == -1) {
             System.out.println("!!! CRITICAL ERROR: File format corrupted (no hash separator) !!!");
-            return null;
+            throw new Exception("存档损坏");
         }
 
         // Extract expected hash and compressed data
@@ -164,7 +170,7 @@ public class ChineseChessDataSaver {
         // 3. Integrity Check
         if (!expectedHash.equals(recalculatedHash)) {
             System.out.println("\n!!! SECURITY WARNING: DATA TAMPERED OR CORRUPTED !!!");
-            return null;
+            throw new Exception("存档损坏");
         }
 
         System.out.println("Integrity Check PASSED. Data is trustworthy.");
@@ -189,8 +195,7 @@ public class ChineseChessDataSaver {
             System.out.println("this is not your data");
             System.out.println("you are "+username);
             System.out.println("this data belongs to "+gameData.username);
-            GameDialogue d = new GameDialogue();;
-            return null;
+            throw new Exception("存档不属于你");
         }
 
         System.out.println("Successfully loaded and validated data for "+username+" from: " + filepath);

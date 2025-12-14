@@ -43,10 +43,13 @@ public class MenuController {
             filechooser.setTitle("选取存档");
             File file = filechooser.showOpenDialog(stage);
             System.out.println(file);
-            if(false==elements.game.getBoard().loadBoardFromFile(elements.Username,file.getPath())){
-                elements.Dialogue.startInfoDialogue(elements,"错误","这不是你的存档",stage);
-            };
-            //test
+            try{
+                if(file!=null){
+                    elements.game.getBoard().loadBoardFromFile(elements.Username,file.getPath());
+                }
+            } catch (Exception e){
+                elements.Dialogue.startInfoDialogue(elements,"错误",e.getMessage(),stage);
+            }//test
             System.out.println(elements.Username);
 
             GraphicController.refreshWindow(elements);
@@ -55,10 +58,12 @@ public class MenuController {
             FileChooser filechooser= new FileChooser();
             filechooser.setTitle("选取存档");
             File file = filechooser.showOpenDialog(stage);
-            System.out.println(file);if(false==elements.game.getBoard().loadBoardFromFile(elements.Username,file.getPath())){
-                elements.Dialogue.startInfoDialogue(elements,"错误","这不是你的存档",stage);
-                return;
-            };
+            System.out.println(file);
+            try{elements.game.getBoard().loadBoardFromFile(elements.Username,file.getPath());}
+            catch (Exception e){
+                elements.Dialogue.startInfoDialogue(elements,"错误",e.getMessage(),stage);
+            }
+
             //做加载动作
             elements.game.getBoard().returnViewToInitial();
             elements.NextStep = new Button("下一步");

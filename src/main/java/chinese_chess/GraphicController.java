@@ -369,7 +369,7 @@ public class GraphicController {
             if(elements.SignIn.getText().equals("登录"))
                 elements.Dialogue.startInputDialogue(elements,"登入","输入用户名","user-name",stage,"Username",Side.BLACK);
             else{
-                elements.Username=new String("游客");
+                elements.Username=new String("");
                 elements.userDataKeeper.saveLogState(new String(""));
                 elements.SignIn.setText("登录");
                 try{GraphicController.refreshWindow(elements);}catch (Exception e){};
