@@ -1,5 +1,5 @@
 package data;
 
 public enum GameStatus {
-    RED_WIN,BLACK_WIN,TIE,ONGOING;
+    RED_WIN,BLACK_WIN,TIE,ONGOING,ALTERING/*摆棋*/;
 }

@@ -64,4 +64,6 @@ public class GraphicElements {
 
     public AIMove aiMove;
     public Button BlackAIAssist, RedAIAssist;
+
+    public Button Altermode;//摆棋
 }

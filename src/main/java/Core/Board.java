@@ -284,6 +284,8 @@ public class Board {
         Piece piece = getPieceAt(fromPosition);
         setPieceAt(toPosition, piece);
         setPieceAt(fromPosition, null);
+        MoveRecord record=new MoveRecord(fromPosition, toPosition);
+        this.moveHistory.add(record);
     }
 
     public void regretLastMove() throws Exception {
