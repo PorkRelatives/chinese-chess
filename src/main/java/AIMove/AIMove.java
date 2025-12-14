@@ -46,7 +46,7 @@ public class AIMove {
                 for (Position to : moves){
                     // simulate on a copied board
                     Board sim = copyBoard(board);
-                    sim.movePiece(from, to, false);
+                    sim.movePiece(from, to, false, true);
                     sim.switchTurn();
 
                     int score = -negamax(sim, maxDepth - 1, Integer.MIN_VALUE/2, Integer.MAX_VALUE/2, opposite(side));
@@ -89,7 +89,7 @@ public class AIMove {
                 if (legal == null) continue;
                 for (Position to : legal){
                     Board sim = copyBoard(board);
-                    sim.movePiece(from, to, false);
+                    sim.movePiece(from, to, false,true);
                     sim.switchTurn();
                     int score = -negamax(sim, depth - 1, -beta, -alpha, opposite(side));
                     if (score > max) max = score;

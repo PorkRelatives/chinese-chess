@@ -32,7 +32,7 @@ public class testAlgorithm {
             String[] parts=input.split(" ");
             if(parts.length!=2) {
                 if (input.equals("regret")) {
-                    game.getBoard().regretLastMove();
+                    game.getBoard().regretLastMove(true);
                     game.printBoard();
                     System.out.printf("Now it is %s's turn", game.getBoard().getCurrentTurn());
                     if (game.getBoard().isGeneralInCheck(game.getBoard().getCurrentTurn())) {

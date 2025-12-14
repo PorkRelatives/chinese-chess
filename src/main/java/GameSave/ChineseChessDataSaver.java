@@ -1,6 +1,7 @@
 package GameSave;
 
 import Core.Board;
+import GameDialogues.GameDialogue;
 import data.Position;
 
 import java.io.*;
@@ -188,6 +189,7 @@ public class ChineseChessDataSaver {
             System.out.println("this is not your data");
             System.out.println("you are "+username);
             System.out.println("this data belongs to "+gameData.username);
+            GameDialogue d = new GameDialogue();;
             return null;
         }
 

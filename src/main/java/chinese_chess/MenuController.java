@@ -43,7 +43,9 @@ public class MenuController {
             filechooser.setTitle("选取存档");
             File file = filechooser.showOpenDialog(stage);
             System.out.println(file);
-            elements.game.getBoard().loadBoardFromFile(elements.Username,file.getPath());
+            if(false==elements.game.getBoard().loadBoardFromFile(elements.Username,file.getPath())){
+                elements.Dialogue.startInfoDialogue(elements,"错误","这不是你的存档",stage);
+            };
             //test
             System.out.println(elements.Username);
 
@@ -53,10 +55,53 @@ public class MenuController {
             FileChooser filechooser= new FileChooser();
             filechooser.setTitle("选取存档");
             File file = filechooser.showOpenDialog(stage);
-            System.out.println(file);
-            elements.game.getBoard().loadBoardFromFile(elements.Username,file.getPath());
+            System.out.println(file);if(false==elements.game.getBoard().loadBoardFromFile(elements.Username,file.getPath())){
+                elements.Dialogue.startInfoDialogue(elements,"错误","这不是你的存档",stage);
+                return;
+            };
             //做加载动作
             elements.game.getBoard().returnViewToInitial();
+            elements.NextStep = new Button("下一步");
+            elements.LastStep = new Button("上一步");
+            elements.GotoStart = new Button("回到起点");
+            elements.NextStep.setOnAction(actionEvent -> {
+                try {
+                    handleRecordNextStep(elements);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            elements.LastStep.setOnAction(actionEvent -> {
+                try {
+                    handleRecordPrevStep(elements);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            elements.GotoStart.setOnAction(actionEvent -> {
+                try {
+                    handleRecordRestart(elements);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+
+            elements.RecordControlMenu = new VBox();
+            elements.RecordControlButtons = new HBox();
+            elements.RecordControlButtons.getChildren().add(elements.GotoStart);
+            elements.RecordControlButtons.getChildren().add(elements.LastStep);
+            elements.RecordControlButtons.getChildren().add(elements.NextStep);
+            elements.RecordControlMenu.setStyle("-fx-border-color:black;-fx-border-width:2px;");
+            elements.RecordControlMenu.getChildren().add(elements.RecordControlButtons);
+            elements.CurrentStep = new Label("第0步");
+            elements.CurrentStep.setStyle("-fx-font-size: 16; -fx-text-fill: black;");
+            elements.RecordControlMenu.getChildren().add(elements.CurrentStep);
+
+
+            elements.RecordControlMenu.setPadding(new Insets(MENU_PADDING/2,MENU_PADDING/2,MENU_PADDING/2,MENU_PADDING/2));
+            elements.GameMenu.getChildren().add(elements.RecordControlMenu);
+            elements.game.isViewingRecord=true;
 
         }
     }
@@ -77,47 +122,7 @@ public class MenuController {
             throw new RuntimeException(e);
         }
         //把几个按钮加上：上一步 下一步 回到起点
-        elements.NextStep = new Button("下一步");
-        elements.LastStep = new Button("上一步");
-        elements.GotoStart = new Button("回到起点");
-        elements.NextStep.setOnAction(actionEvent -> {
-            try {
-                handleRecordNextStep(elements);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
-        elements.LastStep.setOnAction(actionEvent -> {
-            try {
-                handleRecordPrevStep(elements);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
-        elements.GotoStart.setOnAction(actionEvent -> {
-            try {
-                handleRecordRestart(elements);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
 
-
-        elements.RecordControlMenu = new VBox();
-        elements.RecordControlButtons = new HBox();
-        elements.RecordControlButtons.getChildren().add(elements.GotoStart);
-        elements.RecordControlButtons.getChildren().add(elements.LastStep);
-        elements.RecordControlButtons.getChildren().add(elements.NextStep);
-        elements.RecordControlMenu.setStyle("-fx-border-color:black;-fx-border-width:2px;");
-        elements.RecordControlMenu.getChildren().add(elements.RecordControlButtons);
-        elements.CurrentStep = new Label("第0步");
-        elements.CurrentStep.setStyle("-fx-font-size: 16; -fx-text-fill: black;");
-        elements.RecordControlMenu.getChildren().add(elements.CurrentStep);
-
-
-        elements.RecordControlMenu.setPadding(new Insets(MENU_PADDING/2,MENU_PADDING/2,MENU_PADDING/2,MENU_PADDING/2));
-        elements.GameMenu.getChildren().add(elements.RecordControlMenu);
-        elements.game.isViewingRecord=true;
         GraphicController.refreshWindow(elements);
     }
     static void handleRecordNextStep(GraphicElements elements) throws Exception {

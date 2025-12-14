@@ -95,8 +95,11 @@ public class GameDialogue {
             if(typeOfDialogue.equals("Username")){
                 elements.usernameCache=InputField.getText();
                 killDialogue(elements);
-                startInputDialogue(elements,"登入","请输入密码","password",stage,"Password",side);
-
+                if(elements.usernameCache.equals(new String(""))){
+                    QuestionLabel.setText("用户名不能为空");
+                }else{
+                    startInputDialogue(elements,"登入","请输入密码","password",stage,"Password",side);
+                }
             }else if(typeOfDialogue.equals("Password")){
                 elements.passwordCache=InputField.getText();
                 //检验是否密码正确：
@@ -112,10 +115,10 @@ public class GameDialogue {
                 //然后进行文件比对
                 if(elements.userDataKeeper.containMd5(hash)){
                     System.out.println("登陆有效");
+                    elements.userDataKeeper.saveLogState(elements.usernameCache);
                     elements.Username=elements.usernameCache;
                     elements.SignIn.setText("注销");
                     killDialogue(elements);
-
                 }else{
                     System.out.println("账号或密码错误");
                     QuestionLabel.setText("账号或密码错误");
@@ -127,7 +130,10 @@ public class GameDialogue {
                 if(elements.userDataKeeper.containName(elements.usernameCache)){
                     System.out.println("早已注册");
                     QuestionLabel.setText("错误：账号已注册");
-                }else {
+                }else if(elements.usernameCache.equals("")){
+                    System.out.println("用户名为空");
+                    QuestionLabel.setText("错误：用户名为空");
+                }else{
                     killDialogue(elements);
                     startInputDialogue(elements, "注册", "请输入密码", "password", stage, "RegisterPassword", null);
                 }
@@ -199,9 +205,11 @@ public class GameDialogue {
         FinishButton.setLayoutX(width/4-widthConstant/2);
         FinishButton.setLayoutY(height*0.2+heightConstant*5);
         FinishButton.setPrefSize(widthConstant,heightConstant);
-        CancelButton.setLayoutX(width/4+widthConstant/2);
-        CancelButton.setLayoutY(height*0.2+heightConstant*5);
-        CancelButton.setPrefSize(widthConstant,heightConstant);
+        if(CancelButton != null){
+            CancelButton.setLayoutX(width/4+widthConstant/2);
+            CancelButton.setLayoutY(height*0.2+heightConstant*5);
+            CancelButton.setPrefSize(widthConstant,heightConstant);
+        }
     }
     private void killDialogue(GraphicElements elements){
         shutDown();
@@ -260,6 +268,50 @@ public class GameDialogue {
         BackgroundPane.getChildren().add(QuestionLabel);
         BackgroundPane.getChildren().add(FinishButton);
         BackgroundPane.getChildren().add(CancelButton);
+
+        BackgroundPane.setMouseTransparent(false);
+        try {
+            GraphicController.refreshWindow(elements);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void startInfoDialogue(GraphicElements elements,String title,String subtitle, Stage stage){
+        //生成一个简易输入窗口
+        setActive();
+        BackgroundPane = new Pane();
+        BackgroundPane.setLayoutX(0);
+        BackgroundPane.setLayoutY(0);
+        BackgroundPane.setPrefSize(stage.getMaxWidth(),stage.getMaxHeight());
+        BackgroundPane.setStyle("-fx-background-color: #FFFFFF;");
+        BackgroundPane.setOpacity(0.98);
+
+        QuestionLabel = new Label(subtitle);
+        QuestionLabel.setStyle("-fx-font-size: 20; -fx-text-fill: black;");
+        widthConstant=140;
+        heightConstant=40;
+
+        QuestionLabel.setLayoutX(stage.getMaxWidth()/2-widthConstant/2);
+        QuestionLabel.setLayoutY(stage.getMaxHeight()*0.35-heightConstant/2);
+
+        TitleLabel = new Label(title);
+        TitleLabel.setStyle("-fx-font-size: 40; -fx-text-fill: black;");
+        TitleLabel.setLayoutX(stage.getMaxWidth()/2-widthConstant/2);
+        TitleLabel.setLayoutY(stage.getMaxHeight()*0.3-heightConstant/2);
+
+        FinishButton = new Button("确认");
+        FinishButton.setLayoutX(stage.getMaxWidth()/2-widthConstant/2);
+        FinishButton.setLayoutY(stage.getMaxHeight()*0.7-heightConstant/2);
+        FinishButton.setPrefSize(2*widthConstant,heightConstant);
+        FinishButton.setOnAction(actionEvent -> {
+            killDialogue(elements);
+            try{GraphicController.refreshWindow(elements);}catch(Exception e){}
+        });
+        elements.WindowRoot.getChildren().add(BackgroundPane);
+
+        BackgroundPane.getChildren().add(TitleLabel);
+        BackgroundPane.getChildren().add(QuestionLabel);
+        BackgroundPane.getChildren().add(FinishButton);
 
         BackgroundPane.setMouseTransparent(false);
         try {

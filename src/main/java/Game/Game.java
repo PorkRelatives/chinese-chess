@@ -45,6 +45,7 @@ public class Game{
     }
 
     public void touchPosition(Position position) throws Exception {
+        boolean isGuest = (user==null||user.equals(new String("")));
         if(board.isViewing()){
             System.out.println("Currently viewing past moves. Cannot make a move.");
             return;
@@ -85,7 +86,7 @@ public class Game{
                 List<Position> legalMoves=selectedPiece.getLegalMoves(board,selectedPosition);
                 if(positionInList(position,legalMoves)||getGameStatus()==GameStatus.ALTERING){
                     //Move is legal
-                    board.movePiece(selectedPosition,position,true);
+                    board.movePiece(selectedPosition,position,true, isGuest);
                     //Deselect the piece after moving
                     board.setSelectedPosition(null);
                     selectedPiece.isSelected=false;
