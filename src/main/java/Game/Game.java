@@ -26,13 +26,15 @@ public class Game{
     public GameStatus getGameStatus(){
         return gameStatus;
     }
-    public Game(String user){
-        this.user = user;
+    public Game(String username){
+        board= new Board(username);
         gameStatus=GameStatus.ONGOING;
         board.AnnouncedGameResult(false);
+        this.user=username;
     }
+
     public String user;
-    private Board board= new Board(user);
+    public Board board;
 
 
     public static boolean positionInList(Position pos, List<Position> posList){
