@@ -4,6 +4,7 @@ package Game;
 import Core.Board;
 import GameDialogues.GameDialogue;
 import GameSave.MoveRecord;
+import chinese_chess.GraphicElements;
 import data.GameStatus;
 import pieces.Piece;
 import data.Position;
@@ -26,11 +27,14 @@ public class Game{
     public GameStatus getGameStatus(){
         return gameStatus;
     }
-    public Game(String username){
+    public boolean isViewingRecord;
+    GraphicElements elements;
+    public Game(String username, GraphicElements elements){
         board= new Board(username);
         gameStatus=GameStatus.ONGOING;
         board.AnnouncedGameResult(false);
         this.user=username;
+        this.elements=elements;
     }
 
     public String user;
@@ -86,25 +90,49 @@ public class Game{
             else{
                 //Try to move the piece to the new position
                 List<Position> legalMoves=selectedPiece.getLegalMoves(board,selectedPosition);
-                if(positionInList(position,legalMoves)||getGameStatus()==GameStatus.ALTERING){
+                if(positionInList(position,legalMoves)||getGameStatus()==GameStatus.ALTERING) {
                     //Move is legal
-                    board.movePiece(selectedPosition,position,true, isGuest);
+                    board.movePiece(selectedPosition, position, true, isGuest);
                     //Deselect the piece after moving
                     board.setSelectedPosition(null);
-                    selectedPiece.isSelected=false;
+                    selectedPiece.isSelected = false;
 
 
                     //Switch turn
                     board.switchTurn();
                     System.out.println("Move successful!");
-                    int status= board.judgeGameOver();
-                    if(status==1){
+                    int status = board.judgeGameOver();
+                    GameStatus prevStatus=null;
+                    if(elements!=null){
+                        prevStatus = elements.game.getGameStatus();
+                    }
+                    if (status == 1) {
                         System.out.println("Red wins!");
                         setGameStatus(GameStatus.RED_WIN);
-                    }
-                    else if(status==2){
+                    } else if (status == 2) {
                         System.out.println("Black wins!");
                         setGameStatus(GameStatus.BLACK_WIN);
+                    } else if (status == 3) {
+                        System.out.println("Red wins! (Stale)");
+                        setGameStatus(GameStatus.RED_WIN_STALE);
+                    } else if (status == 4) {
+                        System.out.println("Black wins! (Stale)");
+                        setGameStatus(GameStatus.BLACK_WIN_STALE);
+                    }
+
+                    if(elements!=null&&elements.game.getGameStatus().equals(prevStatus)==false){
+                        if(elements.game.getGameStatus().equals(GameStatus.RED_WIN)){
+                            elements.Dialogue.startInfoDialogue(elements,"将死","红方胜利",elements.stage);
+                        }
+                        if(elements.game.getGameStatus().equals(GameStatus.BLACK_WIN)){
+                            elements.Dialogue.startInfoDialogue(elements,"将死","黑方胜利",elements.stage);
+                        }
+                        if(elements.game.getGameStatus().equals(GameStatus.RED_WIN_STALE)){
+                            elements.Dialogue.startInfoDialogue(elements,"困毙","红方胜利",elements.stage);
+                        }
+                        if(elements.game.getGameStatus().equals(GameStatus.BLACK_WIN_STALE)){
+                            elements.Dialogue.startInfoDialogue(elements,"困毙","黑方胜利",elements.stage);
+                        }
                     }
                 }
                 else{
@@ -115,7 +143,5 @@ public class Game{
                 }
             }
         }
-
     }
-    public boolean isViewingRecord;
 }
