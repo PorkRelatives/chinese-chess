@@ -431,7 +431,8 @@ public class GraphicController {
         });
         elements.DifficultyChoice = new ComboBox<String>();
         elements.DifficultyChoice.getItems().addAll("1 - 草履虫","2 - 蛇鼠","3 - 人类","4 - 柯洁(长考)","5 - 邪神(一年下一步)","6 - 上帝(别等，相信我)");
-        elements.DifficultyChoice.setValue("人机难度");
+        elements.DifficultyChoice.setValue("人机难度（默认草履虫）");
+        elements.aiMove.setMaxDepth(1);
         elements.GameMenu.getChildren().add(elements.DifficultyChoice);
         elements.DifficultyChoice.valueProperty().addListener(change -> {
             int curdiff = Integer.parseInt(String.valueOf(elements.DifficultyChoice.getValue().charAt(0)));
