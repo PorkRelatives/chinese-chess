@@ -18,6 +18,13 @@ import static chinese_chess.ConstantValues.MENU_PADDING;
 
 public class MenuController {
     static void initGame(Stage stage, GraphicElements elements, TypeOfInit type) throws Exception {
+        try{
+            elements.GameMenu.getChildren().remove(elements.RecordControlMenu);
+            if(elements.game.getGameStatus()==GameStatus.ALTERING){
+                elements.game.setGameStatus(GameStatus.ONGOING);
+            }
+        }catch (Exception e){}
+
         if(type==TypeOfInit.General){
             System.out.println("Starting New Game");
             elements.game=new Game(elements.Username,elements);
@@ -72,6 +79,7 @@ public class MenuController {
                         elements.game.getBoard().checkBoardFromFile(elements.Username,file.getPath());
                         elements.game=new Game(elements.Username,elements);
                         elements.game.getBoard().loadBoardFromFile(elements.Username,file.getPath());
+                        disableAllPlayerButtons(elements);
                     }catch(Exception e){
                         throw e;
                     }
@@ -127,6 +135,8 @@ public class MenuController {
             elements.GameMenu.getChildren().add(elements.RecordControlMenu);
             elements.game.isViewingRecord=true;
 
+            elements.game.setGameStatus(GameStatus.ALTERING);
+
         }
     }
     static void saveGame(GraphicElements elements, Stage stage)throws Exception{
@@ -177,6 +187,23 @@ public class MenuController {
         for(var u:elements.RedMenu.getChildren()){
             if(u instanceof Button){
                 u.setDisable(true);
+            }
+        }
+        if(elements.game.getBoard().getCurrentTurn().equals(Side.BLACK)){
+            elements.WhosTurn.setText("黑方行棋");
+            if(elements.game.isViewingRecord==false){
+                elements.BlackRegret.setDisable(true);
+                elements.RedRegret.setDisable(false);
+                elements.BlackAIAssist.setDisable(false);
+                elements.RedAIAssist.setDisable(true);
+            }
+        }else{
+            elements.WhosTurn.setText("红方行棋");
+            if(elements.game.isViewingRecord==false){
+                elements.BlackRegret.setDisable(false);
+                elements.RedRegret.setDisable(true);
+                elements.BlackAIAssist.setDisable(true);
+                elements.RedAIAssist.setDisable(false);
             }
         }
     }
