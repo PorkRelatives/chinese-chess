@@ -34,28 +34,33 @@ public class MenuController {
 
             GraphicController.refreshWindow(elements);
             /*从头开始一个游戏*/
-        }else if(type==TypeOfInit.FromSave){
+        }
+        else if(type==TypeOfInit.FromSave){
             System.out.println("Starting From Save");
             //elements.GameMenu.getChildren().remove(elements.NewGame);
             //elements.GameMenu.getChildren().remove(elements.LoadFromSave);
             //开个输入框，然后读取文件
-            elements.game=new Game(elements.Username,elements);
             FileChooser filechooser= new FileChooser();
             filechooser.setTitle("选取存档");
             File file = filechooser.showOpenDialog(stage);
             System.out.println(file);
             try{
                 if(file!=null){
-                    elements.game.getBoard().loadBoardFromFile(elements.Username,file.getPath());
+                    try{
+                        elements.game.getBoard().checkBoardFromFile(elements.Username,file.getPath());
+                        elements.game=new Game(elements.Username,elements);
+                        elements.game.getBoard().loadBoardFromFile(elements.Username,file.getPath());
+                    }catch(Exception e){
+                        throw e;
+                    }
                 }
             } catch (Exception e){
                 elements.Dialogue.startInfoDialogue(elements,"错误",e.getMessage(),stage);
             }//test
-            System.out.println(elements.Username);
+            System.out.println("Loading Save of User "+elements.Username);
 
             GraphicController.refreshWindow(elements);
         }else if(type==TypeOfInit.ViewRecord){
-            elements.game=new Game(elements.Username,elements);
             System.out.println("复盘开始");
             FileChooser filechooser= new FileChooser();
             filechooser.setTitle("选取存档");
@@ -63,7 +68,13 @@ public class MenuController {
             System.out.println(file);
             try{
                 if(file!=null){
-                    elements.game.getBoard().loadBoardFromFile(elements.Username,file.getPath());
+                    try{
+                        elements.game.getBoard().checkBoardFromFile(elements.Username,file.getPath());
+                        elements.game=new Game(elements.Username,elements);
+                        elements.game.getBoard().loadBoardFromFile(elements.Username,file.getPath());
+                    }catch(Exception e){
+                        throw e;
+                    }
                 }else{
                     return;
                 }
